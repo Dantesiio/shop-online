@@ -31,7 +31,7 @@ app.get('/register', (req, res) => {
 // Ruta para manejar el registro
 app.post('/register', (req, res) => {
     const { username, password } = req.body;
-    res.redirect('/store');
+    res.redirect('/index.html');
 });
 
 // Ruta para mostrar la página principal de la tienda

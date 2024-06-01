@@ -13,7 +13,7 @@
         <div class="collapse navbar-collapse">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="/store">Home</a>
+                    <a class="nav-link" href="/admin_store">Home</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/cart">Cart</a>
@@ -81,7 +81,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                    <button type="submit" id="saveProductBtn" class="btn btn-primary">Guardar Producto</button>
+                    <button type="button" id="saveProductBtn" class="btn btn-primary">Guardar Producto</button>
                 </div>
             </div>
         </div>
@@ -117,10 +117,6 @@
                 `).join('');
                 productsContainer.innerHTML = productsHtml;
             });
-
-        // Llamar a cargarProductos al cargar la página
-        document.addEventListener('DOMContentLoaded', cargarProductos);
-
         // Event listener para guardar un nuevo producto
         document.getElementById('saveProductBtn').addEventListener('click', () => {
             const form = document.getElementById('addProductForm');
@@ -129,7 +125,6 @@
             formData.forEach((value, key) => {
                 productData[key] = value;
             });
-
             // Enviar los datos al servidor
             fetch('/api/products', {
                 method: 'post',
@@ -137,12 +132,6 @@
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(productData),
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
             })
             .then(result => {
                 alert('Producto agregado con éxito');
