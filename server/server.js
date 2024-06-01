@@ -1,7 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
-const products = require('./products.js');
+const products = require('./products');
 
 const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -65,20 +65,11 @@ app.get('/api/products', (req, res) => {
     res.json(products);
 });
 
-// Ruta para agregar un nuevo producto
 app.post('/api/products', (req, res) => {
     const newProduct = req.body;
     products.push(newProduct);
     res.status(201).json({ message: 'Producto agregado correctamente', product: newProduct });
 });
-app.post('/api/products', (req, res) => {
-    console.log('Datos recibidos:', req.body);  // Agregar este log
-    const newProduct = req.body;
-    products.push(newProduct);
-    res.status(201).json({ message: 'Producto agregado correctamente', product: newProduct });
-});
-
-
 
 // Ruta para obtener el carrito de compras
 app.get('/api/cart', (req, res) => {

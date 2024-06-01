@@ -81,7 +81,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                    <button type="button" id="saveProductBtn" class="btn btn-primary">Guardar Producto</button>
+                    <button type="submit" id="saveProductBtn" class="btn btn-primary">Guardar Producto</button>
                 </div>
             </div>
         </div>
@@ -96,56 +96,65 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-        <script>
-            // Este script se encarga de cargar los productos dinámicamente
-            fetch('/api/products')
-                .then(response => response.json())
-                .then(products => {
-                    const productsContainer = document.getElementById('products-container');
-                    let productsHtml = products.map(product => `
-                        <div class="col-md-4 product-card">
-                            <div class="card">
-                                <img class="card-img-top" src="${product.image}" alt="${product.name}">
-                                <div class="product-card-body">
-                                    <h5 class="product-card-title">${product.name}</h5>
-                                    <p class="product-card-price">$${product.price.toFixed(2)}</p>
-                                    <p class="product-card-description">${product.description}</p>
-                                    <a href="/add-to-cart/${product.id}" class="btn btn-primary">Add to Cart</a>
-                                </div>
+    <script>
+        // Función para cargar productos
+        fetch('/api/products')
+            .then(response => response.json())
+            .then(products => {
+                const productsContainer = document.getElementById('products-container');
+                let productsHtml = products.map(product => `
+                    <div class="col-md-4 product-card">
+                        <div class="card">
+                            <img class="card-img-top" src="${product.image}" alt="${product.name}">
+                            <div class="product-card-body">
+                                <h5 class="product-card-title">${product.name}</h5>
+                                <p class="product-card-price">$${product.price.toFixed(2)}</p>
+                                <p class="product-card-description">${product.description}</p>
+                                <a href="/add-to-cart/${product.id}" class="btn btn-primary">Add to Cart</a>
                             </div>
                         </div>
-                    `).join('');
-                    productsContainer.innerHTML = productsHtml;
-                });
-        
-            // Event listener para guardar un nuevo producto
-            document.getElementById('saveProductBtn').addEventListener('click', () => {
-                const form = document.getElementById('addProductForm');
-                const formData = new FormData(form);
-                const productData = {};
-                formData.forEach((value, key) => {
-                    productData[key] = value;
-                });
-        
-                // Enviar los datos al servidor
-                fetch('/api/products', {
-                    method: 'post',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(productData),
-                })
-                .then(response => response.json())
-                .then(result => {
-                    // Manejar la respuesta del servidor, por ejemplo, mostrar un mensaje de éxito o recargar la página para actualizar los productos
-                    alert('Producto agregado con éxito');
-                    location.reload();
-                })
-                .catch(error => {
-                    console.error('Error al agregar producto:', error);
-                    alert('Ocurrió un error al agregar el producto. Por favor, inténtalo de nuevo.');
-                });
+                    </div>
+                `).join('');
+                productsContainer.innerHTML = productsHtml;
             });
-        </script>
-    </body>
+
+        // Llamar a cargarProductos al cargar la página
+        document.addEventListener('DOMContentLoaded', cargarProductos);
+
+        // Event listener para guardar un nuevo producto
+        document.getElementById('saveProductBtn').addEventListener('click', () => {
+            const form = document.getElementById('addProductForm');
+            const formData = new FormData(form);
+            const productData = {};
+            formData.forEach((value, key) => {
+                productData[key] = value;
+            });
+
+            // Enviar los datos al servidor
+            fetch('/api/products', {
+                method: 'post',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(productData),
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(result => {
+                alert('Producto agregado con éxito');
+                form.reset();  // Resetear el formulario
+                $('#addProductModal').modal('hide');  // Cerrar el modal
+                cargarProductos();  // Recargar la lista de productos
+            })
+            .catch(error => {
+                console.error('Error al agregar producto:', error);
+                alert('Ocurrió un error al agregar el producto. Por favor, inténtalo de nuevo.');
+            });
+        });
+    </script>
+</body>
 </html>
