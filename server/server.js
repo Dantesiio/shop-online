@@ -1,10 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
-const products = require('./products');
-
-const adminRoutes = require('./routes/adminRoutes');
-const customerRoutes = require('./routes/customerRoutes');
+const products = require('./products.js');
 
 const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -20,7 +17,7 @@ let shippingInfo = {};
 app.post('/login', (req, res) => {
     const { username, password } = req.body;
     if (username === 'admin' && password === 'password') {
-        res.send('Inicio de sesión exitoso');
+        res.sendFile(path.join(__dirname, 'public', 'admin_store.html'));
     } else {
         res.send('Nombre de usuario o contraseña incorrectos');
     }
@@ -68,6 +65,21 @@ app.get('/api/products', (req, res) => {
     res.json(products);
 });
 
+// Ruta para agregar un nuevo producto
+app.post('/api/products', (req, res) => {
+    const newProduct = req.body;
+    products.push(newProduct);
+    res.status(201).json({ message: 'Producto agregado correctamente', product: newProduct });
+});
+app.post('/api/products', (req, res) => {
+    console.log('Datos recibidos:', req.body);  // Agregar este log
+    const newProduct = req.body;
+    products.push(newProduct);
+    res.status(201).json({ message: 'Producto agregado correctamente', product: newProduct });
+});
+
+
+
 // Ruta para obtener el carrito de compras
 app.get('/api/cart', (req, res) => {
     res.json(cart);
@@ -99,10 +111,7 @@ app.get('/api/invoice', (req, res) => {
     res.json(invoice);
 });
 
-app.use('/admin', adminRoutes);
-app.use('/customer', customerRoutes);
-
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
+    console.log(`Servidor en ejecución en el puerto ${PORT}`);
 });

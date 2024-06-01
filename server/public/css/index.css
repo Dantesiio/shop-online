@@ -1,0 +1,73 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: left ; /* Centra horizontalmente el contenido */
+    align-items: center; /* Centra verticalmente el contenido */
+    background-image: url('https://www.hostinger.es/tutoriales/wp-content/uploads/sites/7/2020/06/tienda-de-ropa.png');
+    background-size: cover;
+    background-position: left center; /* Desplaza la imagen a la izquierda */
+    background-repeat: no-repeat;
+}
+.form-group {
+    margin-bottom: 15px; 
+}
+
+.form-control {
+    width: 100%; 
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.btn-primary {
+    width: 100%; 
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    background-color: #007bff; 
+    color: white; 
+    cursor: pointer;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3; 
+}
+.form-wrapper {
+    background-color: rgba(255, 255, 255, 0.5); 
+    padding: 20px;
+    border-radius: 10px; 
+    width: 300px; 
+    margin-left: 50px; 
+}
+
+.form-wrapper h2 {
+    text-align: center; /* Centrar todos los h2 dentro de .form-wrapper */
+}
+.register-container {
+    display: flex;
+    align-items: center;
+}
+
+.register-container p {
+    margin-right: 10px; /* Espacio entre el texto y el botón */
+}
+
+.register-container button {
+    padding: 10px 20px;
+    background-color: #28a745; /* Color verde */
+    border: none; /* Eliminar el borde */
+    border-radius: 5px; /* Borde redondeado */
+    color: white; /* Color del texto */
+    cursor: pointer; /* Cambiar el cursor al pasar el ratón */
+    transition: background-color 0.3s; /* Transición suave */
+}
+
+.register-container button:hover {
+    background-color: #218838; /* Color de fondo del botón al pasar el ratón */
+}
+
+
+
