@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Online Store</title>
+    <title>Shopping Cart</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/styles.css">
 </head>
@@ -20,9 +20,12 @@
         </div>
     </nav>
     <div class="container">
-        <h1 class="mt-5">Welcome to Our Online Store</h1>
-        <div class="row" id="products-container">
-            <!-- Productos se agregarán aquí dinámicamente -->
+        <h1 class="mt-5">Your Shopping Cart</h1>
+        <div class="row" id="cart-container">
+            <!-- Productos del carrito se agregarán aquí dinámicamente -->
+        </div>
+        <div class="mt-3">
+            <a href="/shipping" class="btn btn-success">Proceed to Checkout</a>
         </div>
     </div>
     <footer class="footer mt-5 py-3 bg-light">
@@ -31,24 +34,24 @@
         </div>
     </footer>
     <script>
-        fetch('/api/products')
+        fetch('/api/cart')
             .then(response => response.json())
-            .then(products => {
-                const productsContainer = document.getElementById('products-container');
-                let productsHtml = products.map(product => `
+            .then(cart => {
+                const cartContainer = document.getElementById('cart-container');
+                let cartHtml = cart.map(item => `
                     <div class="col-md-4 product-card">
                         <div class="card">
-                            <img class="card-img-top" src="${product.image}" alt="${product.name}">
+                            <img class="card-img-top" src="${item.image}" alt="${item.name}">
                             <div class="product-card-body">
-                                <h5 class="product-card-title">${product.name}</h5>
-                                <p class="product-card-price">$${product.price.toFixed(2)}</p>
-                                <p class="product-card-description">${product.description}</p>
-                                <a href="/add-to-cart/${product.id}" class="btn btn-primary">Add to Cart</a>
+                                <h5 class="product-card-title">${item.name}</h5>
+                                <p class="product-card-price">$${item.price.toFixed(2)}</p>
+                                <p class="product-card-description">${item.description}</p>
+                                <p class="product-card-quantity">Quantity: ${item.quantity}</p>
                             </div>
                         </div>
                     </div>
                 `).join('');
-                productsContainer.innerHTML = productsHtml;
+                cartContainer.innerHTML = cartHtml;
             });
     </script>
 </body>

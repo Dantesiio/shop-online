@@ -13,6 +13,9 @@ app.use(bodyParser.json());
 // Servir archivos estáticos desde la carpeta public
 app.use(express.static(path.join(__dirname, 'public')));
 
+let cart = [];
+let shippingInfo = {};
+
 // Ruta para manejar el inicio de sesión
 app.post('/login', (req, res) => {
     const { username, password } = req.body;
@@ -36,56 +39,64 @@ app.post('/register', (req, res) => {
 
 // Ruta para mostrar la página principal de la tienda
 app.get('/store', (req, res) => {
-    let productsHtml = products.map(product => `
-        <div class="col-md-4 product-card">
-            <div class="card">
-                <img class="card-img-top" src="${product.image}" alt="${product.name}">
-                <div class="product-card-body">
-                    <h5 class="product-card-title">${product.name}</h5>
-                    <p class="product-card-price">$${product.price.toFixed(2)}</p>
-                    <p class="product-card-description">${product.description}</p>
-                    <a href="#" class="btn btn-primary">Add to Cart</a>
-                </div>
-            </div>
-        </div>
-    `).join('');
+    res.sendFile(path.join(__dirname, 'public', 'store.html'));
+});
 
-    res.send(`
-        <!DOCTYPE html>
-        <html>
-        <head>
-            <title>Store</title>
-            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-            <link rel="stylesheet" href="/css/styles.css">
-        </head>
-        <body>
-            <nav class="navbar navbar-expand-lg navbar-light bg-light">
-                <a class="navbar-brand" href="#">Online Store</a>
-                <div class="collapse navbar-collapse">
-                    <ul class="navbar-nav ml-auto">
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Carrito</a>
-                        </li>
-                    </ul>
-                </div>
-            </nav>
-            <div class="container">
-                <h1 class="mt-5">Welcome to Our Shoes Store</h1>
-                <div class="row">
-                    ${productsHtml}
-                </div>
-            </div>
-            <footer class="footer mt-5 py-3 bg-light">
-                <div class="container">
-                    <span class="text-muted">© 2024 Online Store. All rights reserved.</span>
-                </div>
-            </footer>
-        </body>
-        </html>
-    `);
+// Ruta para mostrar el carrito de compras
+app.get('/cart', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'cart.html'));
+});
+
+// Ruta para mostrar la página de envío
+app.get('/shipping', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'shipping.html'));
+});
+
+// Ruta para manejar la información de envío y redirigir a la factura
+app.post('/order', (req, res) => {
+    shippingInfo = req.body;
+    res.redirect('/invoice');
+});
+
+// Ruta para mostrar la página de factura
+app.get('/invoice', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'invoice.html'));
+});
+
+// Ruta para obtener los productos
+app.get('/api/products', (req, res) => {
+    res.json(products);
+});
+
+// Ruta para obtener el carrito de compras
+app.get('/api/cart', (req, res) => {
+    res.json(cart);
+});
+
+// Ruta para añadir productos al carrito
+app.get('/add-to-cart/:id', (req, res) => {
+    const productId = parseInt(req.params.id);
+    const product = products.find(p => p.id === productId);
+    if (product) {
+        const cartItem = cart.find(item => item.id === productId);
+        if (cartItem) {
+            cartItem.quantity += 1;
+        } else {
+            cart.push({ ...product, quantity: 1 });
+        }
+    }
+    res.redirect('/store');
+});
+
+// Ruta para obtener la información de la factura
+app.get('/api/invoice', (req, res) => {
+    const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+    const invoice = {
+        shipping: shippingInfo,
+        cart: cart,
+        total: total
+    };
+    res.json(invoice);
 });
 
 app.use('/admin', adminRoutes);
