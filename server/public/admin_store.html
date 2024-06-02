@@ -121,35 +121,6 @@
                     `).join('');
                     productsContainer.innerHTML = productsHtml;
                 });
-        
-            // Event listener para guardar un nuevo producto
-            // document.getElementById('saveProductBtn').addEventListener('click', () => {
-            //     const form = document.getElementById('addProductForm');
-            //     const formData = new FormData(form);
-            //     const productData = {};
-            //     formData.forEach((value, key) => {
-            //         productData[key] = value;
-            //     });
-        
-            //     // Enviar los datos al servidor
-            //     fetch('/api/products', {
-            //         method: 'post',
-            //         headers: {
-            //             'Content-Type': 'application/json',
-            //         },
-            //         body: JSON.stringify(productData),
-            //     })
-            //     .then(response => response.json())
-            //     .then(result => {
-            //         // Manejar la respuesta del servidor, por ejemplo, mostrar un mensaje de éxito o recargar la página para actualizar los productos
-            //         alert('Producto agregado con éxito');
-            //         location.reload();
-            //     })
-            //     .catch(error => {
-            //         console.error('Error al agregar producto:', error);
-            //         alert('Ocurrió un error al agregar el producto. Por favor, inténtalo de nuevo.');
-            //     });
-            // });
         </script>
     </body>
 </html>

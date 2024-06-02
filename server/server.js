@@ -148,41 +148,42 @@ app.post('/add_product', (req, res) => {
     console.log("Registro de producto NUEVOOO!!!!");
     const { name, price, description, stock,discount,category,brand} = req.body;
     const image = req.file;
-    // console.log("name : "+name);
-    // console.log("price : "+price);
-    // console.log("description : "+description);
-    // console.log("stock : "+stock);
-    // console.log("discount : "+discount);
-    // console.log("category : "+category);
-    // console.log("brand : "+brand);
+
+    const newPrice = parseFloat(price);
+    const newStock = parseInt(stock);
+    const newDiscount = parseFloat(discount);
+
     const lastItem=products[products.length-1];
     const id = lastItem.id+1;
     const newProduct = {
         id: id,
-        stock: stock,
+        stock: newStock,
         image: "/assets/images/products/product1.png",
-        discount: discount,
+        discount: newDiscount,
         category: category,
         brand: brand,
         name: name,
-        price: price,
+        price: newPrice,
         description: description
     }
     const productFilePath = path.join(__dirname, 'products.js');
     fs.readFile(productFilePath, 'utf8', (err, data) => {
-        console.log("R1")
         if (err) {
             console.error('Error leyendo el archivo:', err);
             return res.status(500).send('Error interno del servidor');
         }
 
-        // let usersList = [];
+        let productList = [];
 
-        console.log("R2")
+        console.log("lista : "+products.length)
 
         products.push(newProduct); // Agrega el nuevo producto a la lista de productos
 
+        console.log("lista nueva: "+products.length)
 
+        console.log(newProduct)
+
+        
         function objectToJSString(obj) {
             if (Array.isArray(obj)) {
                 return '[' + obj.map(item => objectToJSString(item)).join(', ') + ']';
@@ -222,26 +223,12 @@ app.post('/add_product', (req, res) => {
                 console.error('Error escribiendo en el archivo:', err);
                 return res.status(500).send('Error interno del servidor');
             }
-            console.log("R3");
         
             // Redirigir al usuario a una página de éxito o login
             console.log("producto registrado");
             res.sendFile(path.join(__dirname, 'public', 'admin_store.html'));
         });
 
-        // const fileContent =  `const products = ${JSON.stringify(products,null,2)};\nmodule.exports = products;`;
-
-        // fs.writeFile(productFilePath, fileContent, (err) => {
-        //     if (err) {
-        //         console.error('Error escribiendo en el archivo:', err);
-        //         return res.status(500).send('Error interno del servidor');
-        //     }
-        //     console.log("R3")
-
-        //     // Redirigir al usuario a una página de éxito o login
-        //     console.log("producto registrado")
-        //     res.redirect('/store');
-        // });
     });
 
     
@@ -258,13 +245,6 @@ app.post('/api/products', (req, res) => {
     // products.push(newProduct);
     res.status(201).json({ message: 'Producto agregado correctamente', product: newProduct });
 });
-
-// app.post('/api/products', (req, res) => {
-//     console.log('Datos recibidos:', req.body);  // Agregar este log
-//     const newProduct = req.body;
-//     products.push(newProduct);
-//     res.status(201).json({ message: 'Producto agregado correctamente', product: newProduct });
-// });
 
 
 // Ruta para obtener el carrito de compras
