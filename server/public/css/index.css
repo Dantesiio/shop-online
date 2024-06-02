@@ -16,14 +16,14 @@ body {
 }
 
 .form-control {
-    width: 100%; 
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+    width: 70%; 
+    padding: 8px;
+    border: 0px solid #ccc;
+    border-radius: 2px;
 }
 
 .btn-primary {
-    width: 100%; 
+    width: 80%; 
     padding: 10px;
     border: none;
     border-radius: 4px;

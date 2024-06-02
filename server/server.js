@@ -56,9 +56,6 @@ app.post('/login', (req, res) => {
     }else{
         res.sendFile(path.join(__dirname, 'public', 'admin_store.html'));
     }
-    // if (username === 'admin' && password === 'password') {
-    //     res.sendFile(path.join(__dirname, 'public', 'admin_store.html'));
-    // }
 });
 
 // Ruta para mostrar la página de registro
@@ -69,6 +66,8 @@ app.get('/register', (req, res) => {
 // Ruta para manejar el registro
 app.post('/register', (req, res) => {
     const { username, password } = req.body;
+    res.redirect('/index.html');
+
     let userValidate = getUserByUsername(username);
     if(userValidate != ""){
         res.send('Username ya ha sido tomado');
@@ -108,9 +107,6 @@ app.post('/register', (req, res) => {
             res.redirect('/store');
         });
     });
-
-    // console.log("Usuario logueado")
-    // res.redirect('/store');
 });
 
 // Ruta para mostrar la página principal de la tienda
@@ -144,17 +140,11 @@ app.get('/api/products', (req, res) => {
     res.json(products);
 });
 
+
 app.post('/add_product', (req, res) => {
     console.log("Registro de producto NUEVOOO!!!!");
     const { name, price, description, stock,discount,category,brand} = req.body;
     const image = req.file;
-    // console.log("name : "+name);
-    // console.log("price : "+price);
-    // console.log("description : "+description);
-    // console.log("stock : "+stock);
-    // console.log("discount : "+discount);
-    // console.log("category : "+category);
-    // console.log("brand : "+brand);
     const lastItem=products[products.length-1];
     const id = lastItem.id+1;
     const newProduct = {
@@ -170,18 +160,11 @@ app.post('/add_product', (req, res) => {
     }
     const productFilePath = path.join(__dirname, 'products.js');
     fs.readFile(productFilePath, 'utf8', (err, data) => {
-        console.log("R1")
         if (err) {
             console.error('Error leyendo el archivo:', err);
             return res.status(500).send('Error interno del servidor');
         }
-
-        // let usersList = [];
-
-        console.log("R2")
-
-        products.push(newProduct); // Agrega el nuevo producto a la lista de productos
-
+        products.push(newProduct); 
 
         function objectToJSString(obj) {
             if (Array.isArray(obj)) {
@@ -229,19 +212,6 @@ app.post('/add_product', (req, res) => {
             res.sendFile(path.join(__dirname, 'public', 'admin_store.html'));
         });
 
-        // const fileContent =  `const products = ${JSON.stringify(products,null,2)};\nmodule.exports = products;`;
-
-        // fs.writeFile(productFilePath, fileContent, (err) => {
-        //     if (err) {
-        //         console.error('Error escribiendo en el archivo:', err);
-        //         return res.status(500).send('Error interno del servidor');
-        //     }
-        //     console.log("R3")
-
-        //     // Redirigir al usuario a una página de éxito o login
-        //     console.log("producto registrado")
-        //     res.redirect('/store');
-        // });
     });
 
     
@@ -258,13 +228,6 @@ app.post('/api/products', (req, res) => {
     // products.push(newProduct);
     res.status(201).json({ message: 'Producto agregado correctamente', product: newProduct });
 });
-
-// app.post('/api/products', (req, res) => {
-//     console.log('Datos recibidos:', req.body);  // Agregar este log
-//     const newProduct = req.body;
-//     products.push(newProduct);
-//     res.status(201).json({ message: 'Producto agregado correctamente', product: newProduct });
-// });
 
 
 // Ruta para obtener el carrito de compras
