@@ -1,0 +1,26 @@
+Consultas Postman:
+El {{back}} es la direcciÃ³n que nos da el forward adress
+1.Registrar usuario
+Post {{back}}/register
+input:{
+    "username": "David",
+    "password": "123",
+    "role": "admin"
+  }
+
+2.Obtener productos
+Get {{back}}/store
+
+3.Obtener productos del carrito
+Get {{back}}/cart
+
+4.Registrar un producto
+Post {{back}}/register_product
+input:{
+stock: 10, image: "/assets/images/products/product1.png",
+ discount: 0.15,
+ category: "Zapatos",
+ brand: "Vans",
+ name: "TENIS BOTA SKATE NEGROS SK8-HI DURACAP VANS",
+ price: 30,
+ description: "Zapato negro clasico"}

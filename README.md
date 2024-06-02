@@ -1,5 +1,10 @@
 # Online Store Project
 
+## Integrantes
+-David Donneys
+-Alejandro Muñoz
+-Samuel Ibarras
+
 ## Descripción
 
 Este proyecto es una tienda en línea desarrollada como proyecto final de curso. La tienda permite a los administradores agregar productos al inventario y a los clientes comprar productos. Se genera una factura para cada compra realizada por un cliente. La gestión de datos se realiza de forma volátil, es decir, los datos permanecen mientras el programa principal está en ejecución.
@@ -26,3 +31,10 @@ Este proyecto es una tienda en línea desarrollada como proyecto final de curso.
 - **Backend:** Node.js, Express
 - **Frontend:** HTML, CSS, JavaScript
 - **Autenticación:** JSON 
+
+## Como iniciar el servidor
+
+Una vez abierto el proyecto se crear una terminal y ejecutar los siguientes comandos en orden:
+1. cd server
+
+2. npm start

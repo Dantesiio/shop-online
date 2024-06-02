@@ -49,12 +49,14 @@ function getUserByUsername(username){
 // Ruta para manejar el inicio de sesión
 app.post('/login', (req, res) => {
     const { username, password } = req.body;
-
     let user = getUserByUsername(username);
+    currentUser=user;
     if(user==="" || user.password != password){
         res.send('Nombre de usuario o contraseña incorrectos');
-    }else{
+    }else if(user.role== "admin"){
         res.sendFile(path.join(__dirname, 'public', 'admin_store.html'));
+    }else if(user.role=="customer"){
+        res.sendFile(path.join(__dirname, 'public', 'store.html'));
     }
 });
 
@@ -66,7 +68,7 @@ app.get('/register', (req, res) => {
 // Ruta para manejar el registro
 app.post('/register', (req, res) => {
     const { username, password } = req.body;
-    res.redirect('/index.html');
+    res.sendFile(path.join(__dirname, 'public', 'store.html'));
 
     let userValidate = getUserByUsername(username);
     if(userValidate != ""){
@@ -252,6 +254,7 @@ app.get('/api/cart', (req, res) => {
 
 // Ruta para añadir productos al carrito
 app.get('/add-to-cart/:id', (req, res) => {
+    let user = getUserByUsername(currentUser.username);
     const productId = parseInt(req.params.id);
     const product = products.find(p => p.id === productId);
     if (product) {
@@ -262,7 +265,12 @@ app.get('/add-to-cart/:id', (req, res) => {
             cart.push({ ...product, quantity: 1 });
         }
     }
-    res.redirect('/store');
+    if(user.role === 'customer'){
+        res.sendFile(path.join(__dirname, 'public', 'store.html'));
+    }
+    else{
+        res.sendFile(path.join(__dirname, 'public', 'admin_store.html'));
+    }
 });
 
 // Ruta para obtener la información de la factura

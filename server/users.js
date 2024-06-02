@@ -28,6 +28,16 @@ const users = [
     "username": "donneys",
     "password": "123",
     "role": "customer"
+  },
+  {
+    "username": "Maria ",
+    "password": "1088",
+    "role": "customer"
+  },
+  {
+    "username": "maria",
+    "password": "123",
+    "role": "customer"
   }
 ];
 module.exports = users;
