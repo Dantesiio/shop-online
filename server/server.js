@@ -56,9 +56,6 @@ app.post('/login', (req, res) => {
     }else{
         res.sendFile(path.join(__dirname, 'public', 'admin_store.html'));
     }
-    // if (username === 'admin' && password === 'password') {
-    //     res.sendFile(path.join(__dirname, 'public', 'admin_store.html'));
-    // }
 });
 
 // Ruta para mostrar la página de registro
@@ -69,6 +66,8 @@ app.get('/register', (req, res) => {
 // Ruta para manejar el registro
 app.post('/register', (req, res) => {
     const { username, password } = req.body;
+    res.redirect('/index.html');
+
     let userValidate = getUserByUsername(username);
     if(userValidate != ""){
         res.send('Username ya ha sido tomado');
@@ -108,9 +107,6 @@ app.post('/register', (req, res) => {
             res.redirect('/store');
         });
     });
-
-    // console.log("Usuario logueado")
-    // res.redirect('/store');
 });
 
 // Ruta para mostrar la página principal de la tienda
@@ -144,6 +140,7 @@ app.get('/api/products', (req, res) => {
     res.json(products);
 });
 
+
 app.post('/add_product', (req, res) => {
     console.log("Registro de producto NUEVOOO!!!!");
     const { name, price, description, stock,discount,category,brand} = req.body;
@@ -172,6 +169,7 @@ app.post('/add_product', (req, res) => {
             console.error('Error leyendo el archivo:', err);
             return res.status(500).send('Error interno del servidor');
         }
+
 
         let productList = [];
 
