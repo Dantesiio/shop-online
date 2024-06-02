@@ -145,17 +145,22 @@ app.post('/add_product', (req, res) => {
     console.log("Registro de producto NUEVOOO!!!!");
     const { name, price, description, stock,discount,category,brand} = req.body;
     const image = req.file;
+
+    const newPrice = parseFloat(price);
+    const newStock = parseInt(stock);
+    const newDiscount = parseFloat(discount);
+
     const lastItem=products[products.length-1];
     const id = lastItem.id+1;
     const newProduct = {
         id: id,
-        stock: stock,
+        stock: newStock,
         image: "/assets/images/products/product1.png",
-        discount: discount,
+        discount: newDiscount,
         category: category,
         brand: brand,
         name: name,
-        price: price,
+        price: newPrice,
         description: description
     }
     const productFilePath = path.join(__dirname, 'products.js');
@@ -164,8 +169,19 @@ app.post('/add_product', (req, res) => {
             console.error('Error leyendo el archivo:', err);
             return res.status(500).send('Error interno del servidor');
         }
-        products.push(newProduct); 
 
+
+        let productList = [];
+
+        console.log("lista : "+products.length)
+
+        products.push(newProduct); // Agrega el nuevo producto a la lista de productos
+
+        console.log("lista nueva: "+products.length)
+
+        console.log(newProduct)
+
+        
         function objectToJSString(obj) {
             if (Array.isArray(obj)) {
                 return '[' + obj.map(item => objectToJSString(item)).join(', ') + ']';
@@ -205,7 +221,6 @@ app.post('/add_product', (req, res) => {
                 console.error('Error escribiendo en el archivo:', err);
                 return res.status(500).send('Error interno del servidor');
             }
-            console.log("R3");
         
             // Redirigir al usuario a una página de éxito o login
             console.log("producto registrado");
