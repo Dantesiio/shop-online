@@ -45,20 +45,3 @@ function fetchProducts() {
             });
         });
 }
-
-function addToCart(productId) {
-    const userId = localStorage.getItem('userId');
-    const quantity = 1; // For simplicity, we add 1 item at a time
-
-    fetch('/customer/add-to-cart', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ userId, productId, quantity })
-    })
-    .then(response => response.json())
-    .then(cart => {
-        alert('Product added to cart');
-    });
-}

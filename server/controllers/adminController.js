@@ -1,4 +1,4 @@
-const admins = [{ id: 1, username: 'admin', password: 'admin' }];
+const admins = [{ id: 1, username: 'admin', password: 'password' }];
 const products = [];
 
 exports.login = (req, res) => {
